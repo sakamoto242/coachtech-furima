@@ -35,7 +35,7 @@ Stripe CLIを使用してWebhookの転送を開始します。
 ※表示された whsec_... を .env の STRIPE_WEBHOOK_SECRET に設定してください。
 
 ## ER図
-![ER図](https://github.com/sakamoto242/coachtech-furima/blob/main/er.png?raw=true)
+![ER図](https://github.com/sakamoto242/coachtech-furima/blob/main/erd.png?raw=true)
 
 
  URL
