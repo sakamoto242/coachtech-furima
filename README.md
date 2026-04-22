@@ -5,7 +5,7 @@ Markdown
 ## 1. 環境構築
 
 ### Dockerビルド
-1. **リポジトリのクローン**
+ **リポジトリのクローン**
    ```bash
    git clone [https://github.com/sakamoto242/coachtech-furima.git](https://github.com/sakamoto242/coachtech-furima.git)
 
@@ -44,11 +44,11 @@ Bash
 .\stripe listen --forward-to localhost/stripe/webhook
 表示された whsec_... を .env の STRIPE_WEBHOOK_SECRET に設定する。
 
-３. ER図
-<img width="693" height="641" alt="スクリーンショット 2026-02-11 220008" src="https://github.com/user-attachments/assets/8b9182e8-6dee-44a0-b47d-320c1469366f" />
+## 3. ER図
+![ER図](./er.png)
 
 
-４. URL
+ URL
 開発環境: http://localhost/
 
 phpMyAdmin: http://localhost:8080/
