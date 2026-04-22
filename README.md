@@ -45,7 +45,7 @@ Bash
 表示された whsec_... を .env の STRIPE_WEBHOOK_SECRET に設定する。
 
 ## 3. ER図
-![ER図](https://github.com/sakamoto242/coachtech-furima/blob/main/er.png?raw=true)
+![ER図](er.png)
 
 
  URL
