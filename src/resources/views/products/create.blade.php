@@ -15,7 +15,6 @@
                     画像を選択する
                 </label>
                 <input type="file" name="image" id="image" style="display: none;" accept="image/*">
-                {{-- プレビュー画像がここに挿入されます --}}
                 @error('image')
                     <p style="color: #ff5a5f; font-size: 14px; margin-top: 10px; font-weight: bold;">{{ $message }}</p>
                 @enderror
@@ -91,13 +90,12 @@
 
         <div class="form-group" style="margin-bottom: 40px;">
     <p style="font-weight: bold; margin-bottom: 10px;">販売価格</p>
-    {{-- display: flex を使って、マークと入力欄を一体化させます --}}
     <div style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; background-color: #fff;">
         {{-- 左側のグレーの背景部分 --}}
         <span style="padding: 12px 20px; background-color: #eee; border-right: 1px solid #ccc; font-weight: bold; font-size: 18px; color: #333;">
             ¥
         </span>
-        {{-- 右側の入力部分（枠線を消して一体化） --}}
+      
         <input type="number" name="price" style="flex: 1; padding: 12px; border: none; outline: none; font-size: 16px;" value="{{ old('price') }}">
     </div>
     @error('price')
@@ -131,7 +129,6 @@
         user-select: none;
     }
 
-    /* チェックボックスが入っているときのスタイル */
     input[type="checkbox"]:checked + .category-tag {
         background-color: #ff5a5f;
         color: #fff;
@@ -147,7 +144,7 @@
         // 画像プレビュー
         const imageInput = document.getElementById('image');
         const dropZone = document.getElementById('drop-zone');
-        // 👇 「画像を選択する」ボタンのラベルを取得
+        
         const selectLabel = dropZone.querySelector('label[for="image"]');
 
         imageInput.addEventListener('change', function(e) {
@@ -167,14 +164,14 @@
                 img.style.borderRadius = '4px';
                 img.style.display = 'block';
                 img.style.margin = '0 auto';
-                img.style.cursor = 'pointer'; // クリックできることがわかるように
+                img.style.cursor = 'pointer'; 
 
-                // 👇 画像をクリックしたら再度ファイル選択が開くようにする
+                
                 img.addEventListener('click', function() {
                     imageInput.click();
                 });
 
-                // 👇 ボタンを隠して、画像を表示する
+                
                 selectLabel.style.display = 'none';
                 dropZone.appendChild(img);
             };

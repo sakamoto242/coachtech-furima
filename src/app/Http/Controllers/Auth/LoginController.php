@@ -20,8 +20,7 @@ class LoginController extends Controller
     }
 
     /**
-     * 【テストケース対応】
-     * 認証失敗時のバリデーションメッセージをカスタマイズ
+    
      */
     protected function sendFailedLoginResponse(Request $request)
     {
@@ -30,18 +29,15 @@ class LoginController extends Controller
         ]);
     }
 
-    /**
-     * 【テストケース対応】
-     * ログアウト後のリダイレクト先をトップページに指定
-     */
+  
     protected function loggedOut(Request $request)
     {
         return redirect('/');
     }
-    // LoginController.php 内に追加
+   
 protected function authenticated(Request $request, $user)
 {
-    // 通常のログイン時はマイリストへ
+    
     return redirect('/?page=mylist');
 }
 }

@@ -135,10 +135,10 @@
 
     .custom-option {
         display: block;
-        padding: 12px 12px 12px 35px; /* 左側にチェックマーク用の余白 */
+        padding: 12px 12px 12px 35px; 
         cursor: pointer;
         border-bottom: 1px solid #777;
-        color: #ffffff; /* 白文字 */
+        color: #ffffff; 
         font-size: 14px;
         position: relative;
         transition: background-color 0.2s;
@@ -160,7 +160,7 @@
     }
 
     .custom-option:hover {
-        background-color: #007bff; /* 青色に光る */
+        background-color: #007bff; 
         color: #ffffff;
     }
 
@@ -210,7 +210,6 @@
     <div class="category-group">
         @foreach($categories as $category)
             <div class="category-item">
-                {{-- チェックボックス：idをラベルのforと一致させる --}}
                 <input type="checkbox" name="categories[]" value="{{ $category->id }}" id="cat-{{ $category->id }}" style="display: none;" class="cat-check">
                 {{-- デザイン用のラベル：クリックでチェックボックスが反応する --}}
                 <label for="cat-{{ $category->id }}" class="category-tag">
@@ -219,7 +218,6 @@
             </div>
         @endforeach
     </div>
-    {{-- 下記の 'selected-category' の hidden 行は削除してください --}}
 </div>
         @endforeach
     </div>
@@ -275,12 +273,9 @@
 
     categoryTags.forEach(tag => {
         tag.addEventListener('click', function() {
-            // ラベルの 'for' 属性から対応するチェックボックスを特定
             const checkboxId = this.getAttribute('for');
             const checkbox = document.getElementById(checkboxId);
 
-            // チェック状態を反転（ラベルクリックでON/OFFを切り替え）
-            // ※本来 label for があれば自動で変わりますが、activeクラス制御のため明示的に処理
             setTimeout(() => {
                 if (checkbox.checked) {
                     this.classList.add('active');

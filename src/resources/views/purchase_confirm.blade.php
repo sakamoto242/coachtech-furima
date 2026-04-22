@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* 全体の背景色（薄いグレー） */
     body { background-color: #f5f5f5; color: #333; }
 
     .purchase-container {
@@ -94,7 +93,7 @@
     /* 購入ボタン */
     .btn-buy {
         width: 100%;
-        background-color: #ff5a5f; /* お手本の赤ピンク色 */
+        background-color: #ff5a5f;
         color: white;
         border: none;
         padding: 14px;
@@ -172,7 +171,6 @@
 {{-- 右側のフォーム部分 --}}
 <form action="{{ route('purchase.execute', ['id' => $product->id]) }}" method="POST">
     @csrf
-    {{-- ★ 隠し入力(hidden)を追加して、JavaScriptで値を入れます --}}
     <input type="hidden" name="payment_method" id="payment-method-hidden" value="">
     <button type="submit" class="btn-buy">購入する</button>
 </form>
@@ -182,10 +180,10 @@
         const val = this.value;
         const methodText = val === 'card' ? 'クレジットカード' : 'コンビニ払い';
         
-        // 右側テーブルの表示を更新
+
         document.querySelectorAll('.summary-table td')[1].innerText = methodText;
 
-        // ★ フォーム送信用の値をセット
+
         document.getElementById('payment-method-hidden').value = val;
     });
 </script>

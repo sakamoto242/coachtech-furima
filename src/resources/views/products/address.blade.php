@@ -10,11 +10,10 @@
     .btn-update { width: 100%; background: #ff5a5f; color: white; border: none; padding: 15px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
 </style>
 
-{{-- ★ ここから追加: 全体を中央に寄せるためのコンテナ --}}
 <div class="address-container">
     <h1 class="page-title">住所の変更</h1>
 
-    {{-- ★ ここから追加: データを送信するためのフォーム --}}
+
     <form action="{{ route('address.update', ['id' => $product->id]) }}" method="POST">
         @csrf
 

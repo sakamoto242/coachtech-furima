@@ -140,9 +140,9 @@ class ProductController extends Controller
 
         $user = Auth::user();
 
-        // ★修正ポイント：$request->postcode ではなく $request->post_code を使う
+      
         $user->update([
-            'post_code' => $request->post_code, // Bladeのname属性と合わせる
+            'post_code' => $request->post_code,
             'address'   => $request->address,
             'building'  => $request->building,
         ]);
@@ -150,9 +150,6 @@ class ProductController extends Controller
         return redirect()->route('purchase.show', ['id' => $id])
                          ->with('message', '住所を更新しました');
     }
-    /**
-     * 商品購入実行 (FN022, FN023)
-     */
    public function executePurchase(Request $request, $id)
 {
     $request->validate([
@@ -188,7 +185,7 @@ class ProductController extends Controller
             'product_id' => $product->id,
             'user_id'    => Auth::id(),
         ],
-    ]); // ここで閉じ括弧が必要
+    ]); 
 
     return redirect($session->url, 303);
 }
@@ -201,24 +198,23 @@ class ProductController extends Controller
     $product = Product::findOrFail($id);
     $product->update(['buyer_id' => Auth::id()]);
 
-    // 一覧に戻さず、専用のビューを表示
+  
     return view('products.thanks', compact('product'));
 }
 
 /**
- * 購入確認画面の表示 (FN022)
+ * 購入確認画面の表示 
  */
 public function purchase($id)
 {
     $product = Product::findOrFail($id);
 
-    // 【追加】自分が出品した商品の購入画面にはアクセスさせない
+
     if (Auth::id() === $product->user_id) {
         return redirect()->route('product.show', $product->id)
                          ->with('error', '自分が出品した商品は購入できません。');
     }
 
-    // すでに売却済みの場合も詳細に戻す
     if ($product->buyer_id) {
         return redirect()->route('product.show', $product->id)
                          ->with('error', 'この商品は既に売り切れています。');
@@ -227,13 +223,13 @@ public function purchase($id)
     return view('products.purchase', compact('product'));
 }
 /**
- * 送付先住所変更画面の表示 (FN024)
+ * 送付先住所変更画面の表示 
  */
 public function editAddress($id)
 {
-    // 商品情報を取得（戻るボタンなどでIDが必要なため）
+    
     $product = Product::findOrFail($id);
-    // 現在のユーザー情報を取得
+    
     $user = Auth::user();
 
     return view('products.address', compact('product', 'user'));
@@ -249,19 +245,18 @@ public function handleWebhook(Request $request)
         return response()->json(['error' => 'Invalid payload'], 400);
     }
 
-    // 支払い完了イベント（checkout.session.completed）をキャッチ
+   
     if ($data['type'] === 'checkout.session.completed') {
         $session = $data['data']['object'];
 
-        // executePurchase で仕込んだ metadata から ID を取り出す
-        // $session['metadata'] または $session->metadata の形式で取得
+      
         $productId = $session['metadata']['product_id'] ?? null;
         $userId = $session['metadata']['user_id'] ?? null;
 
         if ($productId && $userId) {
             $product = Product::find($productId);
             if ($product) {
-                // ここで実際に buyer_id を更新して SOLD 状態にする
+                
                 $product->update(['buyer_id' => $userId]);
             }
         }

@@ -6,7 +6,7 @@
     <title>COACHTECH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* ログイン・登録画面ではヘッダーの要素を隠す */
+
         @if (Route::is('login') || Route::is('register') || Route::is('verification.notice'))
             .navbar .d-flex.align-items-center.justify-content-end,
             .navbar form,

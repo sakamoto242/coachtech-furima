@@ -42,7 +42,7 @@
         margin-bottom: 30px;
     }
 
-    /* セクションタイトル（見本通りの下線） */
+    /* セクションタイトル */
     .section-title {
         font-size: 20px;
         font-weight: bold;
@@ -86,12 +86,12 @@
 </style>
 
 <div class="show-container">
-    {{-- 左側：画像 --}}
+   
     <div class="show-image-box">
         <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
     </div>
 
-    {{-- 右側：詳細 --}}
+  
     <div class="show-details">
         <h1 class="product-title">{{ $product->name }}</h1>
         <p class="brand-name">{{ $product->brand ?? 'ブランドなし' }}</p>
@@ -122,11 +122,10 @@
     <a href="{{ route('purchase.show', $product->id) }}" class="btn-purchase">購入手続きへ</a>
 
 @elseif($product->buyer_id)
-    {{-- 売却済みの場合はグレーアウト --}}
     <button class="btn-purchase" style="background-color: #888; cursor: not-allowed;" disabled>売り切れました</button>
 
 @else
-    {{-- 出品者本人の場合 --}}
+
     <button class="btn-purchase" style="background-color: #ccc; cursor: default;" disabled>自分が出品した商品です</button>
 @endif
 
@@ -156,7 +155,6 @@
             4 => '状態が悪い'
         ];
     @endphp
-    {{ $conditions[$product->condition] ?? '不明' }}
 </td>
             </tr>
         </table>
@@ -166,7 +164,6 @@
             @foreach($product->comments as $comment)
                 <div class="comment-item">
                     <div class="comment-user">
-    {{-- 直接imgタグにクラスを当てる --}}
     <img src="{{ $comment->user->image ? asset('storage/' . $comment->user->image) : asset('images/default-user.png') }}" class="user-icon">
     <span>{{ $comment->user->name }}</span>
 </div>

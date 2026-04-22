@@ -2,14 +2,13 @@
 
 @section('content')
 <style>
-    /* 1. 全体を中央に寄せ、適切な幅を持たせる */
+
     .products-container {
         max-width: 1024px;
         margin: 0 auto;
         padding: 40px 20px;
     }
 
-    /* 2. 画面いっぱいのグレーの線を引くためのラッパー */
     .tab-menu-wrapper {
         width: 100vw;
         position: relative;
@@ -44,7 +43,6 @@
         border-bottom: 3px solid #ff5a5f;
     }
 
-    /* 3. 商品グリッドを横4列に固定 */
     .product-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -67,8 +65,8 @@
     }
 
     .product-card a {
-    text-decoration: none !important; /* 下線を消す */
-    color: #333 !important;          /* 文字を黒にする */
+    text-decoration: none !important; 
+    color: #333 !important;         
 }
 
     .product-name {
@@ -94,13 +92,12 @@
     {{-- タブメニュー --}}
 <div class="tab-menu-wrapper">
     <div class="tab-menu">
-        {{-- おすすめタブ：現在のキーワードをリレーする --}}
         <a href="{{ route('product.index', ['keyword' => request('keyword')]) }}" 
            class="tab-item {{ !request('page') ? 'active' : '' }}">
            おすすめ
         </a>
         
-        {{-- マイリストタブ：現在のキーワードをリレーする --}}
+     
         <a href="{{ route('product.index', ['page' => 'mylist', 'keyword' => request('keyword')]) }}" 
            class="tab-item {{ request('page') == 'mylist' ? 'active' : '' }}">
            マイリスト
@@ -120,7 +117,6 @@
                     <span style="color: #888;">No Image</span>
                 @endif
 
-                {{-- ★ ここを追加：購入者がいる場合はSoldを表示 --}}
                 @if($product->buyer_id)
                     <div class="sold-label">Sold</div>
                 @endif

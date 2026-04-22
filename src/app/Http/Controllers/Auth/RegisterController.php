@@ -29,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    // ★ここをコメントアウトして、下の「関数」だけが動くようにします
+
     // protected $redirectTo = '/email/verify';
 
     /**
@@ -71,10 +71,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-    // RegisterController.php 内に追加
+   
 protected function redirectTo()
 {
-    // 会員登録の直後は必ずプロフィール設定画面へ
+  
     return '/profile/setup';
 }
 }

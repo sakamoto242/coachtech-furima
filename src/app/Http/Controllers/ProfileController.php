@@ -16,16 +16,14 @@ public function create()
 {
     $user = Auth::user();
 
-    // ★住所が登録済み（＝初期設定が終わっている）なら、マイページへ移動させる
+   
     if (!empty($user->address)) {
-        return redirect('/?page=mylist'); // ← ここをマイリストのURLに合わせる
+        return redirect('/?page=mylist');
     }
 
     return view('profile_setup', compact('user'));
 }
-    /**
-     * プロフィール情報の保存処理（後ほど実装）
-     */
+   
     public function store(Request $request)
 {
     // バリデーション
@@ -36,7 +34,7 @@ public function create()
         'address'   => ['required', 'string', 'max:255'],
         'building'  => ['nullable', 'string', 'max:255'],
     ], [
-        // ★ここを追加
+    
         'post_code.required' => '郵便番号を入力してください',
         'post_code.digits'   => '郵便番号はハイフンなしの7桁で入力してください',
     ]);
@@ -56,7 +54,6 @@ public function create()
     $user->building = $request->building;
     $user->save();
 
-    // 更新後は商品一覧（トップ）へ
     return redirect()->route('product.index')->with('success', 'プロフィールを更新しました');
 }
 }

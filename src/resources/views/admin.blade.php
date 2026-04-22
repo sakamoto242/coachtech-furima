@@ -45,7 +45,7 @@
                    onblur="if(!this.value)this.type='text'">
         </div>
 
-        {{-- ボタンを共通のdivで囲わず、CSSの .search-form の gap で制御 --}}
+        
         <button class="search-form__button-submit" type="submit">検索</button>
         <a class="search-form__button-reset" href="/admin">リセット</a>
     </form>
@@ -100,7 +100,6 @@
   </div> {{-- .admin__table --}}
 </div> {{-- .admin__content --}}
 
-{{-- ★★★ モーダルとスクリプトはここ（テーブルの外）に配置 ★★★ --}}
 <div id="detailModal" class="modal">
     <div class="modal__content">
         <div class="modal__close">&times;</div>

@@ -18,7 +18,6 @@
         color: #333;
     }
 
-    /* Bootstrapの不要なカード装飾を消す */
     .card {
         border: none;
         background: transparent;
@@ -27,12 +26,11 @@
         display: none;
     }
 
-    /* 各入力項目の間隔 */
+
     .form-group-custom {
         margin-bottom: 25px;
     }
 
-    /* ラベル（太字） */
     .form-group-custom label {
         display: block;
         margin-bottom: 8px;
@@ -51,7 +49,6 @@
         box-sizing: border-box;
     }
 
-    /* 鮮やかな赤色のログインボタン */
     .btn-login-red {
         width: 100%;
         background-color: #ff5a5f;
@@ -71,7 +68,6 @@
         color: white;
     }
 
-    /* 下部の「会員登録はこちら」リンク */
     .login-footer {
         text-align: center;
         margin-top: 20px;

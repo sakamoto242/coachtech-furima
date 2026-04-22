@@ -28,11 +28,11 @@
         object-fit: cover;
     }
     .product-info-mini .details h2 {
-    font-size: 28px; /* 少し大きく */
+    font-size: 28px; 
     margin-bottom: 8px;
 }
 .product-info-mini .details p {
-    font-size: 22px; /* 少し大きく */
+    font-size: 22px; 
 }
 
     .purchase-section {
@@ -64,7 +64,7 @@
         font-size: 14px;
     }
 
-    /* 右側：決済合計ボックス（見本通りに枠線で囲む） */
+    /* 右側：決済合計ボックス */
     .purchase-right {
         flex: 1;
         border: 1px solid #ddd;
@@ -82,15 +82,15 @@
         text-align: left;
     }
     .summary-table tr {
-    border-bottom: 1px solid #eee; /* 項目ごとに薄い線を引く */
+    border-bottom: 1px solid #eee; 
 }
 .summary-table tr:last-child {
-    border-bottom: none; /* 最後の項目（支払い方法）の下には線を引かない */
+    border-bottom: none; 
 }
     .summary-table tr th { font-weight: normal; color: #333; }
     .summary-table tr td { text-align: right; font-weight: bold; }
 
-    /* 支払い方法未選択時の赤文字（見本再現） */
+    /* 支払い方法未選択時の赤文字 */
     .method-warning {
         color: #ff5a5f;
         font-weight: bold;

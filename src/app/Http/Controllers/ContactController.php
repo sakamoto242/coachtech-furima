@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// バリデーション（ContactRequest）を使うための宣言
 use App\Http\Requests\ContactRequest; 
 use App\Models\Category;
 use App\Models\Contact;
@@ -19,7 +18,6 @@ class ContactController extends Controller
     }
 
     // 2. 確認画面の表示
-    // 引数を ContactRequest にすることで自動的に入力チェックがかかります
     public function confirm(ContactRequest $request)
     {
         // 全入力データを取得
@@ -38,7 +36,7 @@ class ContactController extends Controller
     // 3. データベースへの保存処理
     public function store(Request $request)
     {
-        // 修正するボタンで戻った場合などのために、ここではRequestから直接取得
+        
         $contact = $request->only(['last_name', 'first_name', 'gender', 'email', 'tel', 'address', 'building', 'category_id', 'detail']);
         
         // データベースに保存
@@ -127,10 +125,10 @@ class ContactController extends Controller
     }
     public function export(Request $request)
 {
-    // 検索条件を取得（検索結果だけを出力したい場合）
+ 
     $query = Contact::with('category');
 
-    // 検索条件（名前・メール・性別など）があれば絞り込み
+   
     if ($request->has('fullname')) {
         $query->where('last_name', 'like', '%' . $request->fullname . '%')
               ->orWhere('first_name', 'like', '%' . $request->fullname . '%');

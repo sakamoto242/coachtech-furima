@@ -118,7 +118,7 @@
            value="{{ old('post_code', $user->post_code) }}" 
            maxlength="7" 
            placeholder="1234567"
-           oninput="this.value = this.value.replace(/[^0-9]/g, '');"> {{-- 少し書き方を変えました --}}
+           oninput="this.value = this.value.replace(/[^0-9]/g, '');">
     
     @error('post_code')
         <div style="color: #ff5a5f; font-size: 14px; margin-top: 5px;">{{ $message }}</div>
@@ -138,7 +138,7 @@
     </form>
 </div>
 <script>
-    // input[name="image"] を探して、中身が変わった（ファイルが選ばれた）ら動く
+
     document.querySelector('input[name="image"]').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -146,7 +146,6 @@
         const reader = new FileReader();
         reader.onload = function(e) {
             const preview = document.getElementById('preview');
-            // 円の中身を、選んだ画像で上書きする
             preview.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
         };
         reader.readAsDataURL(file);

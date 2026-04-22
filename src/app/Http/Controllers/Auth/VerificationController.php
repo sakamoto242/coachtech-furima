@@ -29,7 +29,6 @@ class VerificationController extends Controller
    // protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * ★ここを追加！メール認証が完了した瞬間の行き先を上書きします
      */
     protected function redirectTo()
     {

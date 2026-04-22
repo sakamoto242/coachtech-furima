@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
-    // ★ 1. 購入確認画面を表示する（web.phpの定義に合わせる）
    
     // ★ 1. 購入確認画面を表示する
     public function showPurchasePage($id)
@@ -22,14 +21,14 @@ class PurchaseController extends Controller
             return redirect()->back()->with('error', 'この商品は既に売り切れています。');
         }
 
-        // ★ ここを追加：ログインユーザーを取得する
+
         $user = Auth::user();
 
-        // ★ compact に 'user' を追加して View に渡す
+      
         return view('purchase_confirm', compact('product', 'user'));
     }
 
-    // ★ 2. 決済セッションを作成してStripeへ飛ばす（「購入する」ボタン用）
+  
     public function executePurchase($id)
     {
         $product = Product::findOrFail($id);

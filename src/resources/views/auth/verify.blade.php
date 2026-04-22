@@ -22,7 +22,6 @@
         color: #333;
     }
 
-    /* 認証はこちらからボタン（グレーの枠線・背景） */
     .btn-verify-gray {
         display: inline-block;
         background-color: #e0e0e0; /* 薄いグレー */
@@ -43,7 +42,7 @@
         color: #333;
     }
 
-    /* 再送リンク */
+  
     .resend-link {
         background: none;
         border: none;
@@ -54,7 +53,7 @@
         padding: 0;
     }
 
-    /* 成功メッセージのポップアップ（もしあれば） */
+  
     .alert-success {
         position: fixed;
         top: 100px;

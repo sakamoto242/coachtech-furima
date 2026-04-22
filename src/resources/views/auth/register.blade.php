@@ -31,7 +31,7 @@
         border-radius: 4px;
         font-size: 16px;
     }
-    /* エラーがある時の枠線 */
+
     .is-invalid { border-color: #dc3545 !important; }
 
     .btn-register-red {
@@ -67,7 +67,7 @@
     <label>ユーザー名</label>
     <input type="text" name="name" class="form-control-custom @error('name') is-invalid @enderror" value="{{ old('name') }}">
     @error('name')
-        {{-- ここで $message を表示すれば「お名前を入力してください」が出ます --}}
+     
         <span class="error-message"><strong>{{ $message }}</strong></span>
     @enderror
 </div>
@@ -94,10 +94,7 @@
                 <div class="form-group-custom">
                     <label>確認用パスワード</label>
                     <input type="password" class="form-control-custom" name="password_confirmation">
-                    {{-- 
-                        確認用パスワードのエラー（一致しません）は、
-                        Fortifyの仕様上 password のエラーとして返ってくるため、ここには @error は不要です
-                    --}}
+                
                 </div>
 
                 <button type="submit" class="btn-register-red">

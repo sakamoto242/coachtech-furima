@@ -12,7 +12,7 @@ class UserProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('profile', compact('user')); // ファイル名が profile.blade.php の場合
+        return view('profile', compact('user')); 
     }
 
     // データを更新（保存）する
@@ -27,17 +27,17 @@ class UserProfileController extends Controller
             'building' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
        ], [
-            // ★カスタムメッセージ
+           
             'post_code.digits' => '郵便番号はハイフンなしの7桁で入力してください',
         ]);
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('profiles', 'public');
-            $user->image = $path; // マイグレーションに合わせて 'image' に修正
+            $user->image = $path; 
         }
 
         $user->name = $request->name;
-        $user->post_code = $request->post_code; // ここもカラム名に合わせる
+        $user->post_code = $request->post_code;
         $user->address = $request->address;
         $user->building = $request->building;
 

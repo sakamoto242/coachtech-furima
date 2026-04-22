@@ -122,7 +122,7 @@ function previewImage(input) {
            class="form-control" 
            value="{{ old('post_code', $user->post_code) }}" 
            maxlength="7" 
-           oninput="value = value.replace(/[^0-9]+/g, '');"> {{-- ←数字以外を消す魔法のコード --}}
+           oninput="value = value.replace(/[^0-9]+/g, '');">
            @error('post_code')
         <div style="color: #ff5a5f; font-size: 14px; margin-top: 5px;">{{ $message }}</div>
     @enderror
