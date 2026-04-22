@@ -7,7 +7,8 @@ Markdown
 ### Dockerビルド
 1. **リポジトリのクローン**
    ```bash
-   git clone https://github.com/sakamoto242/mogitate.git
+   git clone [https://github.com/sakamoto242/coachtech-furima.git](https://github.com/sakamoto242/coachtech-furima.git)
+
 Dockerコンテナの起動
 
 Bash
@@ -17,11 +18,13 @@ Laravel環境構築
 
 Bash
 docker-compose exec php bash
-プロジェクトディレクトリ(src)内での操作
+プロジェクト内での操作
 
 Bash
-cd src
 composer install
+php artisan key:generate
+php artisan migrate --seed
+
 初期設定コマンド
 
 Bash
@@ -29,16 +32,17 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed
 
-２. 使用技術
-PHP: 8.3.0
-Laravel: 8.83.27
-MySQL: 8.0.26
+使用技術
+PHP: 8.x
+Laravel: 10.x
+MySQL: 8.0
+Stripe API (決済処理)
 
 ### Stripe 決済の準備（ローカル開発環境）
-1. Stripe CLIをインストールし、ログインする。
-2. 以下のコマンドで Webhook の転送を開始する。
-   .\stripe listen --forward-to localhost/stripe/webhook
-3. 表示された `whsec_...` を `.env` の `STRIPE_WEBHOOK_SECRET` に設定する。
+Stripe CLIを起動し、Webhookの転送を開始する。
+Bash
+.\stripe listen --forward-to localhost/stripe/webhook
+表示された whsec_... を .env の STRIPE_WEBHOOK_SECRET に設定する。
 
 ３. ER図
 <img width="693" height="641" alt="スクリーンショット 2026-02-11 220008" src="https://github.com/user-attachments/assets/8b9182e8-6dee-44a0-b47d-320c1469366f" />
