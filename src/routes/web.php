@@ -1,66 +1,79 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\LikeController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AdminController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
-/* --- 1. 一般公開（ログイン不要） --- */
-Route::get('/', function () { return redirect('/products'); });
-Route::get('/products', [ProductController::class, 'index'])->name('product.index');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
+/*
+|--------------------------------------------------------------------------
+| メール認証
+|--------------------------------------------------------------------------
+*/
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
-/* --- 2. 認証関連 (Login/Register) --- */
-Auth::routes(['verify' => true]);
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/')->with('success', 'メール認証が完了しました！');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
-/* --- 3. 認証済みユーザー専用 (ログイン必須) --- */
-Route::middleware(['auth'])->group(function () {
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'verification-link-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+/*
+|--------------------------------------------------------------------------
+| 一般ユーザー（スタッフ）用
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/start', [AttendanceController::class, 'startWork'])->name('attendance.start');
+    Route::post('/attendance/end', [AttendanceController::class, 'endWork'])->name('attendance.end');
+    Route::post('/rest/start', [AttendanceController::class, 'startRest'])->name('rest.start');
+    Route::post('/rest/end', [AttendanceController::class, 'endRest'])->name('rest.end');
     
-    // マイページ・プロフィール
-    Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
-    Route::get('/mypage/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
-    // web.php の 24行目
-Route::post('/mypage/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
-
-    // メール確認済みのユーザーのみアクセス可能なグループ
-    Route::middleware(['verified'])->group(function () {
-        // プロフィール設定画面（初回用）
-        Route::get('/profile/setup', [ProfileController::class, 'create'])->name('profile.setup');
-        Route::post('/profile/setup', [ProfileController::class, 'store'])->name('profile.store');
-    });
-
-    // 出品関連
-    Route::get('/sell', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/sell', [ProductController::class, 'store'])->name('products.store');
-
-    /* --- 購入フロー (Stripe連携) --- */
-    // 購入手続き画面の表示
-    Route::get('/purchase/{id}', [ProductController::class, 'purchase'])->name('purchase.show');
+    Route::get('/attendance/list', [AttendanceController::class, 'showList'])->name('attendance.list');
+    Route::get('/attendance/my_correction_list', [AttendanceController::class, 'showMyCorrectionList'])->name('attendance.correction.list');
+    Route::get('/attendance/report', [AttendanceController::class, 'showReport'])->name('attendance.report');
     
-    // 購入実行（Stripe決済画面へリダイレクトする処理）
-    // Bladeの route('purchase.store') と一致させています
-    Route::post('/purchase/{id}', [ProductController::class, 'executePurchase'])->name('purchase.store');
-    
-    // 決済成功後の処理（データベースの buyer_id を更新する）
-    Route::get('/purchase/success/{id}', [ProductController::class, 'success'])->name('purchase.success');
-
-    // 配送先変更
-    Route::get('/purchase/address/{id}', [ProductController::class, 'editAddress'])->name('address.edit');
-    Route::post('/purchase/address/{id}', [ProductController::class, 'updateAddress'])->name('address.update');
-
-    // お気に入り (Like)
-    Route::post('/product/{productId}/like', [LikeController::class, 'store'])->name('like.store');
-    Route::post('/product/{productId}/unlike', [LikeController::class, 'destroy'])->name('like.destroy');
-
-    // コメント
-    Route::post('/product/{productId}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::get('/attendance/{id}', [AttendanceController::class, 'showDetail'])->name('attendance.detail');
+    Route::get('/attendance/correction/{id}', [AttendanceController::class, 'showCorrectionDetail'])->name('attendance.correction.detail');
+    Route::post('/attendance/{id}/correction', [AttendanceController::class, 'submitCorrection'])->name('attendance.correction');
+    Route::get('/attendance/{id}/edit', [AttendanceController::class, 'editDetail'])->name('attendance.edit');
+    Route::post('/attendance/{id}/update', [AttendanceController::class, 'updateDetail'])->name('attendance.update');
 });
 
-// デフォルトのホーム
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+/*
+|--------------------------------------------------------------------------
+| 管理者用
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('guest:admin')->group(function () {
+        Route::get('/login', [AdminController::class, 'showLogin'])->name('login');
+        Route::post('/login', [AdminController::class, 'login']);
+    });
 
-Route::post('/stripe/webhook', [ProductController::class, 'handleWebhook']);
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/staff', [AdminController::class, 'showStaffList'])->name('staff.list');
+        Route::get('/user/{id}', [AdminController::class, 'userAttendance'])->name('user.attendance');
+        Route::get('/attendance/csv', [AdminController::class, 'exportCsv'])->name('attendance.csv');
+        Route::get('/user/{id}/attendance/csv', [AdminController::class, 'exportCsv'])->name('user.attendance.csv');
+        Route::get('/stamp_correction_request/list', [AdminController::class, 'showStampCorrectionList'])->name('stamp.correction.list');
+        
+        Route::get('/attendance/{id}', [AdminController::class, 'attendanceDetail'])->name('attendance.detail');
+        Route::post('/attendance/{id}/update', [AdminController::class, 'updateAttendance'])->name('attendance.update');
+        
+        Route::get('/attendance/approve/{id}', [AdminController::class, 'showApproveDetail'])->name('attendance.approve.detail');
+        Route::post('/attendance/{id}/approve', [AdminController::class, 'approveChange'])->name('approve');
+        
+        Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    });
+});

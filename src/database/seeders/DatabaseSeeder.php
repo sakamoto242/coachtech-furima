@@ -11,13 +11,13 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-   public function run()
-{
-    $this->call([
-        SeasonSeeder::class,
-        // ここに CategorySeeder::class が必要です！
-        CategorySeeder::class, 
-        ProductSeeder::class,
-    ]);
-}
+    public function run()
+    {
+        $this->call([
+            SeasonSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
+            AdminSeeder::class, // 管理者アカウント作成用
+        ]);
+    }
 }

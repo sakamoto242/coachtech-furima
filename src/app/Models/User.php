@@ -2,35 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// 1. MustVerifyEmail をインポートします
+use Illuminate\Contracts\Auth\MustVerifyEmail; 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
+// 2. implements MustVerifyEmail を追加します
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * 複数代入可能な属性
      */
     protected $fillable = [
         'name',
-    'email',
-    'password',
-   'post_code',
-    'address',  // 追加
-    'building', // 追加
-    'image',    // 追加
+        'email',
+        'password',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * シリアライズ時に隠す属性
      */
     protected $hidden = [
         'password',
@@ -38,16 +31,24 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * 勤怠モデルとのリレーション
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-    // ユーザーが「いいね」した商品一覧を取得できるようにする
-public function likedProducts()
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+public function isFinishedWork()
 {
-    return $this->belongsToMany(Product::class, 'likes');
+    // 今日が「退勤済み」かどうかを確認
+    $attendance = $this->attendances()
+        ->whereDate('date', today()) // 日付カラムが 'date' の場合
+        ->first();
+
+    // デバッグ用に現在の attendance の中身を確認
+    // \Log::info($attendance); // これで laravel.log に詳細が出ます
+
+    // 勤怠データが存在し、かつ退勤時間(end_time)が入力されている場合のみ true
+    return !empty($attendance) && !empty($attendance->end_time);
 }
 }

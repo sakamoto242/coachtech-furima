@@ -2,17 +2,17 @@
 
 namespace App\Actions\Fortify;
 
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Validator;
 
 trait PasswordValidationRules
 {
     /**
-     * Get the validation rules used to validate passwords.
+     * Get the validation rules used by password verification.
      *
-     * @return array<int, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array
      */
-    protected function passwordRules(): array
+    protected function passwordRules()
     {
-        return ['required', 'string', Password::default(), 'confirmed'];
+        return ['required', 'string', 'min:8', 'confirmed'];
     }
 }

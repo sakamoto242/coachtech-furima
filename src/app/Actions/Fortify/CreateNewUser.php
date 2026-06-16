@@ -17,26 +17,25 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input): User
-    {
-        Validator::make($input, [
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
-            'password' => ['required', 'string', 'min:8', 'confirmed'], // 指定の8文字以上と一致確認
-        ], [
-            // FN004: エラーメッセージ表示（評価項目）
-            'name.required'     => 'お名前を入力してください',
-            'email.required'    => 'メールアドレスを入力してください',
-            'email.email'       => 'メールアドレスはメール形式で入力してください',
-            'password.required' => 'パスワードを入力してください',
-            'password.min'      => 'パスワードは8文字以上で入力してください',
-            'password.confirmed' => 'パスワードと一致しません',
-        ])->validate();
+   public function create(array $input)
+{
+    Validator::make($input, [
+        'name' => ['required', 'string', 'max::255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'], // min:8 で8文字以上
+    ], [
 
-        return User::create([
-            'name'     => $input['name'],
-            'email'    => $input['email'],
-            'password' => Hash::make($input['password']),
-        ]);
-    }
+        'name.required' => 'お名前を入力してください',
+        'email.required' => 'メールアドレスを入力してください',
+        'password.required' => 'パスワードを入力してください',
+        'password.min' => 'パスワードは8文字以上で入力してください',
+        'password.confirmed' => 'パスワードと一致しません',
+    ])->validate();
+
+    return User::create([
+        'name' => $input['name'],
+        'email' => $input['email'],
+        'password' => Hash::make($input['password']),
+    ]);
+}
 }

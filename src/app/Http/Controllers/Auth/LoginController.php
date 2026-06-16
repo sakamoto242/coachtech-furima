@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request; // 追記
-use Illuminate\Validation\ValidationException; // 追記
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // ここでリダイレクト先をトップページに設定
+    protected $redirectTo = '/';
 
     public function __construct()
     {
@@ -20,7 +21,7 @@ class LoginController extends Controller
     }
 
     /**
-    
+     * ログイン失敗時のメッセージ設定
      */
     protected function sendFailedLoginResponse(Request $request)
     {
@@ -29,15 +30,13 @@ class LoginController extends Controller
         ]);
     }
 
-  
+    /**
+     * ログアウト時のリダイレクト先
+     */
     protected function loggedOut(Request $request)
     {
         return redirect('/');
     }
-   
-protected function authenticated(Request $request, $user)
-{
-    
-    return redirect('/?page=mylist');
-}
+
+    // ★ ここにあった authenticated メソッドを削除しました
 }
